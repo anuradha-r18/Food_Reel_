@@ -6,8 +6,10 @@ import ReelFeed from '../../components/ReelFeed'
 const Saved = () => {
     const [ videos, setVideos ] = useState([])
 
+    const VITE_API_URL = import.meta.env.VITE_API_URL;
+
     useEffect(() => {
-        axios.get("https://food-reel-1.onrender.com/api/food/save", { withCredentials: true })
+        axios.get(`${VITE_API_URL}/api/food/save`, { withCredentials: true })
             .then(response => {
                 const savedFoods = response.data.savedFoods.map((item) => ({
                     _id: item.food._id,

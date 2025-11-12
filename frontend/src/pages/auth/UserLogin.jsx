@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
 
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -13,7 +15,7 @@ const UserLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("https://food-reel-1.onrender.com/api/auth/user/login", {
+    const response = await axios.post(`${VITE_API_URL}/api/auth/user/login`, {
       email,
       password
     }, { withCredentials: true });

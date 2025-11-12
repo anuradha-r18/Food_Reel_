@@ -11,6 +11,8 @@ const CreateFood = () => {
     const [ fileError, setFileError ] = useState('');
     const fileInputRef = useRef(null);
 
+    const VITE_API_URL = import.meta.env.VITE_API_URL;
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -56,7 +58,7 @@ const CreateFood = () => {
         formData.append('description', description);
         formData.append("video", videoFile);
 
-        const response = await axios.post("https://food-reel-1.onrender.com/api/food", formData, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/food`, formData, {
             withCredentials: true,
         })
 
