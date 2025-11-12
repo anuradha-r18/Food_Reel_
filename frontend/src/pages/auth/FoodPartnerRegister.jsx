@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerRegister = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://food-reel-1.onrender.com';  
 
   const navigate = useNavigate();
   
@@ -18,7 +19,7 @@ const FoodPartnerRegister = () => {
     const password = e.target.password.value;
     const address = e.target.address.value;
 
-    axios.post("http://localhost:3000/api/auth/food-partner/register", {
+    axios.post(`${API_BASE_URL}/api/auth/food-partner/register`, {
       name:businessName,
       contactName,
       phone,
