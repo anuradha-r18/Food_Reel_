@@ -1,10 +1,10 @@
-import  React from 'react'
-
+import  React  from 'react'
 import './App.css'
-import AppRoutes from './routes/AppRoutes';
+import AppRoutes from './routes/AppRoutes'
 
 function App() {
-  
+
+
   return (
     <>
       <AppRoutes/>
@@ -12,4 +12,4 @@ function App() {
   )
 }
 
-export default App ;
+export default App
