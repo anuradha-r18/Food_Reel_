@@ -5,8 +5,8 @@ import axios from 'axios'
 
 const Profile = () => {
     const { id } = useParams()
-    const [ profile, setProfile ] = useState(null)
-    const [ videos, setVideos ] = useState([])
+    const [profile, setProfile] = useState(null)
+    const [videos, setVideos] = useState([])
 
     const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -16,7 +16,7 @@ const Profile = () => {
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems)
             })
-    }, [ id ])
+    }, [id])
 
 
     return (
@@ -52,16 +52,21 @@ const Profile = () => {
 
             <section className="profile-grid" aria-label="Videos">
                 {videos.map((v) => (
-                    <div key={v.id} className="profile-grid-item">
-                        {/* Placeholder tile; replace with <video> or <img> as needed */}
-
-
+                    <div key={v._id} className="profile-grid-item" style={{ position: 'relative' }}>
                         <video
                             className="profile-grid-video"
                             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                            src={v.video} muted ></video>
-
-
+                            src={v.video} muted
+                        ></video>
+                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '10px', background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ color: 'white', fontSize: '0.8rem' }}>${v.price || 0}</span>
+                            <button
+                                style={{ padding: '5px 10px', background: '#ff4757', border: 'none', borderRadius: '4px', color: 'white', cursor: 'pointer', fontSize: '0.8rem' }}
+                                onClick={() => window.dispatchEvent(new CustomEvent('addToCart', { detail: v }))}
+                            >
+                                Add
+                            </button>
+                        </div>
                     </div>
                 ))}
             </section>

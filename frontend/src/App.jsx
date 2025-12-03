@@ -1,14 +1,16 @@
-import  React  from 'react'
+import React from 'react'
 import './App.css'
 import AppRoutes from './routes/AppRoutes'
+
+import { CartProvider } from './context/CartContext'
 
 function App() {
 
 
   return (
-    <>
-      <AppRoutes/>
-    </>
+    <CartProvider>
+      <AppRoutes />
+    </CartProvider>
   )
 }
 

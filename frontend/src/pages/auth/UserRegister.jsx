@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const UserRegister = () => {
-
-    const VITE_API_URL = import.meta.env.VITE_API_URL;
+    // Prefer env, but fall back to local backend for development
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
     const navigate = useNavigate();
 
@@ -18,20 +17,25 @@ const UserRegister = () => {
         const email = e.target.email.value;
         const password = e.target.password.value;
 
+        try {
+            const response = await axios.post(
+                `${API_URL}/api/auth/user/register`,
+                {
+                fullName: firstName + " " + lastName,
+                email,
+                password
+                },
+                {
+                    withCredentials: true,
+                }
+            );
 
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/register`, {
-            fullName: firstName + " " + lastName,
-            email,
-            password
-        },
-        {
-            withCredentials: true
-        })
-
-        console.log(response.data);
-
-        navigate("/")
-
+            console.log(response.data);
+            navigate("/")
+        } catch (error) {
+            console.error("Registration failed:", error);
+            alert(error.response?.data?.message || "Registration failed. Please try again.");
+        }
     };
 
     return (

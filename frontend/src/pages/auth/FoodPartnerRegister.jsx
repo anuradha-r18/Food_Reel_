@@ -1,15 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerRegister = () => {
-  const VITE_API_URL = import.meta.env.VITE_API_URL;
+  // Prefer env, but fall back to local backend for development
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   const navigate = useNavigate();
-  
-  const handleSubmit = (e) => { 
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const businessName = e.target.businessName.value;
@@ -19,8 +19,8 @@ const FoodPartnerRegister = () => {
     const password = e.target.password.value;
     const address = e.target.address.value;
 
-    axios.post(`${VITE_API_URL}/api/auth/food-partner/register`, {
-      name:businessName,
+    axios.post(`${API_URL}/api/auth/food-partner/register`, {
+      name: businessName,
       contactName,
       phone,
       email,
@@ -33,6 +33,7 @@ const FoodPartnerRegister = () => {
       })
       .catch(error => {
         console.error("There was an error registering!", error);
+        alert(error.response?.data?.message || "Registration failed. Please try again.");
       });
   };
 
@@ -43,8 +44,8 @@ const FoodPartnerRegister = () => {
           <h1 id="partner-register-title" className="auth-title">Partner sign up</h1>
           <p className="auth-subtitle">Grow your business with our platform.</p>
         </header>
-        <nav className="auth-alt-action" style={{marginTop: '-4px'}}>
-          <strong style={{fontWeight:600}}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
+        <nav className="auth-alt-action" style={{ marginTop: '-4px' }}>
+          <strong style={{ fontWeight: 600 }}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
         </nav>
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">
@@ -61,10 +62,10 @@ const FoodPartnerRegister = () => {
               <input id="phone" name="phone" placeholder="+1 555 123 4567" autoComplete="tel" />
             </div>
           </div>
-            <div className="field-group">
-              <label htmlFor="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="business@example.com" autoComplete="email" />
-            </div>
+          <div className="field-group">
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="business@example.com" autoComplete="email" />
+          </div>
           <div className="field-group">
             <label htmlFor="password">Password</label>
             <input id="password" name="password" type="password" placeholder="Create password" autoComplete="new-password" />

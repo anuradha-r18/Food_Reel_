@@ -1,23 +1,32 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
 
-const ProtectedRoute = ({ children }) => {
-  const token = Cookies.get('token');
+const ProtectedRoute = ({ role, children }) => {
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    if (!token) {
-      console.warn('[ProtectedRoute] No token — redirecting to /user/login');
-      navigate('/user/login', { state: { from: location.pathname }, replace: true });
-    }
-  }, [token, navigate, location.pathname]);
+  const ROLE_CONFIG = {
+    user: { cookie: "userToken", redirect: "/user/login" },
+    partner: { cookie: "partnerToken", redirect: "/food-partner/login" },
+  };
 
-  if (!token) {
-    // Avoid flashing the protected page before redirect
-    return null;
-  }
+  const { cookie, redirect } = ROLE_CONFIG[role] || {};
+
+  useEffect(() => {
+    const token = Cookies.get(cookie);
+    console.log(`[ProtectedRoute] role=${role}, cookieName=${cookie}, token=`, token);
+
+    if (!token) {
+      console.warn(`[ProtectedRoute] No token — redirecting to ${redirect}`);
+      navigate(redirect, { state: { from: location.pathname }, replace: true });
+    } else {
+      setIsReady(true);
+    }
+  }, [cookie, navigate, redirect, role, location.pathname]);
+
+  if (!isReady) return null;
 
   return children;
 };

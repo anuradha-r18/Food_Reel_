@@ -15,15 +15,18 @@ const UserLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post(`${VITE_API_URL}/api/auth/user/login`, {
-      email,
-      password
-    }, { withCredentials: true });
+    try {
+      const response = await axios.post(`${VITE_API_URL}/api/auth/user/login`, {
+        email,
+        password
+      }, { withCredentials: true });
 
-    console.log(response.data);
-
-    navigate("/"); // redirect  home after login
-
+      console.log(response.data);
+      navigate("/"); // redirect  home after login
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert(error.response?.data?.message || "Login failed. Please try again.");
+    }
   };
 
   return (

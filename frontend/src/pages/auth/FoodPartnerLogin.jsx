@@ -15,15 +15,18 @@ const FoodPartnerLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/food-partner/login`, {
-      email,
-      password
-    }, { withCredentials: true });
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/food-partner/login`, {
+        email,
+        password
+      }, { withCredentials: true });
 
-    console.log(response.data);
-
-    navigate("/create-food"); // Redirect to create food page after login
-
+      console.log(response.data);
+      navigate("/create-food"); 
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert(error.response?.data?.message || "Login failed. Please try again.");
+    }
   };
 
   return (

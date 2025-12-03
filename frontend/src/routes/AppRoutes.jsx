@@ -1,15 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import UserRegister from '../pages/auth/UserRegister';
 import ChooseRegister from '../pages/auth/ChooseRegister';
 import UserLogin from '../pages/auth/UserLogin';
 import FoodPartnerRegister from '../pages/auth/FoodPartnerRegister';
 import FoodPartnerLogin from '../pages/auth/FoodPartnerLogin';
+
 import Home from '../pages/general/Home';
 import Saved from '../pages/general/Saved';
+import Cart from '../pages/general/Cart';
 import BottomNav from '../components/BottomNav';
+
 import CreateFood from '../pages/food-partner/CreateFood';
 import Profile from '../pages/food-partner/Profile';
+
 import ProtectedRoute from '../components/ProtectedRoute';
 
 const AppRoutes = () => {
@@ -23,11 +28,13 @@ const AppRoutes = () => {
         <Route path="/food-partner/register" element={<FoodPartnerRegister />} />
         <Route path="/food-partner/login" element={<FoodPartnerLogin />} />
 
-        {/* ✅ Protected Routes */}
+        {/* =============================== */}
+        {/* USER PROTECTED ROUTES */}
+        {/* =============================== */}
         <Route
           path="/"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="user">
               <>
                 <Home />
                 <BottomNav />
@@ -39,7 +46,7 @@ const AppRoutes = () => {
         <Route
           path="/saved"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="user">
               <>
                 <Saved />
                 <BottomNav />
@@ -49,9 +56,24 @@ const AppRoutes = () => {
         />
 
         <Route
+          path="/cart"
+          element={
+            <ProtectedRoute role="user">
+              <>
+                <Cart />
+                <BottomNav />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* =============================== */}
+        {/* FOOD PARTNER PROTECTED ROUTES */}
+        {/* =============================== */}
+        <Route
           path="/create-food"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="partner">
               <CreateFood />
             </ProtectedRoute>
           }
@@ -60,7 +82,7 @@ const AppRoutes = () => {
         <Route
           path="/food-partner/:id"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="partner">
               <Profile />
             </ProtectedRoute>
           }
